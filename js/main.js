@@ -20,27 +20,28 @@
         // pass fetched materials into the existing renderer
         loadMaterialInfo(materials);
       })
-      .catch(err => console.error(err));
+      .catch(error);
 
     }
 
     materialListData();
     //make AJAX call here
-    loadInfoBoxes();
-
-    function loadInfoBoxes() {
+    infoBoxData();
+    
+    function infoBoxData() {
     fetch("https://swiftpixel.com/earbud/api/infoboxes")
       .then(response => response.json())
       .then(infoBoxes => {
         console.log(infoBoxes);
+        loadInfoBoxes(infoBoxes);
       })
-      .catch(err => console.error(err));
+      .catch(error);
     };
   
   
 
   function loadMaterialInfo(materials) {
-      if (!Array.isArray(materials)) return;
+      
       materials.forEach((material) => {
         //clone template li with h3 and p inside
         const clone = materialTemplate && materialTemplate.content ? materialTemplate.content.cloneNode(true) : document.createElement('li');
@@ -56,6 +57,25 @@
         if (materialList) materialList.appendChild(clone);
       });
     };
+
+   function loadInfoBoxes(infoBoxes) {
+    infoBoxes.forEach((infoBox, index) => {
+      let selected = document.querySelector(`#hotspot-${index + 1}`);
+
+      const titleElement = document.createElement("h2");
+      titleElement.textContent = infoBox.title;
+      selected.appendChild(titleElement);
+
+      const textElement = document.createElement("p");
+      textElement.textContent = infoBox.text;
+      selected.appendChild(textElement);
+
+      const imageElement = document.createElement("img");
+      imageElement.src = infoBox.image;
+      selected.appendChild(imageElement);
+    })
+
+  }
     
 
 
