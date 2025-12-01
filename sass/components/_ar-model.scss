@@ -63,6 +63,13 @@
     background-color: #E89B36;
   }
 
+  .static {
+    display: block;
+  }
+
+  #model {
+    display: none;
+  }
   @keyframes circle {
     from {
       transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg);
@@ -85,6 +92,13 @@
 
   @media screen and (min-width: 768px) {
       .Hotspot {
+        display: block;
+      }
+      .static {
+        display: none;
+      }
+      
+      #model {
         display: block;
       }
   }
