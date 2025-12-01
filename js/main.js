@@ -4,6 +4,8 @@
   const hotspots = document.querySelectorAll(".Hotspot");
   const materialTemplate = document.querySelector("#material-template");
   const materialList = document.querySelector("#material-list");
+  const hotspotTemplate = document.querySelector("#hotspot-template");
+  const hotspotList = document.querySelector("#hotspot-list");
 
 
 
