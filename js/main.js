@@ -79,6 +79,7 @@
         //hide loader
         //append the populated template to li
         materialList.appendChild(clone);
+        materialTemplate.appendChild(materialList);
       });
       
     };
