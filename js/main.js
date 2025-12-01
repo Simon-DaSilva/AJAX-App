@@ -6,15 +6,6 @@
   const materialList = document.querySelector("#material-list");
 
 
-  //This information needs to be removed then pulled with an AJAX Call using the Fetch API
-  //this is the api url https://swiftpixel.com/earbud/api/infoboxes"
-
-  
-
-  //This information needs to be removed then pulled with an AJAX Call using the Fetch API
-  //this is the api url https://swiftpixel.com/earbud/api/materials"
-
-
 
   //functions
  
@@ -26,80 +17,59 @@
       .then(response => response.json())
       .then(materials => {
         console.log(materials);
+        // pass fetched materials into the existing renderer
+        loadMaterialInfo(materials);
       })
-      .catch(error);
+      .catch(err => console.error(err));
 
     }
 
     materialListData();
     //make AJAX call here
-
-     function loadInfoBoxes() {
-    fetch("https://swiftpixel.com/earbud/api/infoboxes")
-    .then(response => response.json())
-    .then(infoBoxes => {
-      console.log(infoBoxes);
-    })
-    .catch(error);
-    }
-
-    
+    loadInfoBoxes();
 
     function loadInfoBoxes() {
-    infoBoxes.forEach((infoBox, index) => {
-      let selected = document.querySelector(`#hotspot-${index + 1}`);
-
-      const titleElement = document.createElement('h2');
-      titleElement.textContent = infoBox.title;
-
-      const textElement = document.createElement('p');
-      textElement.textContent = infoBox.text;
-
-      selected.appendChild(titleElement);
-      selected.appendChild(textElement);
-    });
+    fetch("https://swiftpixel.com/earbud/api/infoboxes")
+      .then(response => response.json())
+      .then(infoBoxes => {
+        console.log(infoBoxes);
+      })
+      .catch(err => console.error(err));
     };
-
-    loadInfoBoxes();
   
- 
+  
 
-  function loadMaterialInfo() {
-      materialListData.forEach((materials) => {
+  function loadMaterialInfo(materials) {
+      if (!Array.isArray(materials)) return;
+      materials.forEach((material) => {
         //clone template li with h3 and p inside
-        const clone = materialTemplate.content.cloneNode(true);
+        const clone = materialTemplate && materialTemplate.content ? materialTemplate.content.cloneNode(true) : document.createElement('li');
 
-        //populate clone template
-        const materialHeading = clone.querySelector(".materials-heading");
-        materialHeading.textContent = materials.heading;
+        //populate clone template (support either class naming)
+        const materialHeading = clone.querySelector && (clone.querySelector('.material-heading') || clone.querySelector('.materials-heading'));
+        if (materialHeading) materialHeading.textContent = material.heading || material.name || '';
 
-        const materialDescription = clone.querySelector(".materials-description");
-        materialDescription.textContent = materials.description;
+        const materialDescription = clone.querySelector && (clone.querySelector('.material-description') || clone.querySelector('.materials-description'));
+        if (materialDescription) materialDescription.textContent = material.description || '';
 
-        //hide loader
-        //append the populated template to li
-        materialList.appendChild(clone);
-        materialTemplate.appendChild(materialList);
+        //append the populated template to list
+        if (materialList) materialList.appendChild(clone);
       });
-      
     };
-    loadMaterialInfo();
     
 
 
-  function showInfo() {
+   function showInfo() {
+    
     let selected = document.querySelector(`#${this.slot}`);
-    gsap.to(selected, 1, { autoAlpha: 1 });
+    gsap.to(selected, { duration: 1, autoAlpha: 1 });
   }
-
-  showInfo();
 
   function hideInfo() {
+  
     let selected = document.querySelector(`#${this.slot}`);
-    gsap.to(selected, 1, { autoAlpha: 0 });
+    gsap.to(selected, { duration: 1, autoAlpha: 0 });
   }
-
-  loadInfo();
 
   //Event listeners
 
