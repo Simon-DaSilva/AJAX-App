@@ -19,7 +19,6 @@
       .then(response => response.json())
       .then(materials => {
         console.log(materials);
-        // pass fetched materials into the existing renderer
         loadMaterialInfo(materials);
       })
       .catch(error);
@@ -45,18 +44,20 @@
   function loadMaterialInfo(materials) {
       
       materials.forEach((material) => {
+  
         //clone template li with h3 and p inside
-        const clone = materialTemplate && materialTemplate.content ? materialTemplate.content.cloneNode(true) : document.createElement('li');
+        const clone = materialTemplate.content.cloneNode(true);
 
-        //populate clone template (support either class naming)
-        const materialHeading = clone.querySelector && (clone.querySelector('.material-heading') || clone.querySelector('.materials-heading'));
-        if (materialHeading) materialHeading.textContent = material.heading || material.name || '';
+        //populate clone template
+        const materialHeading = clone.querySelector(".material-heading");
+        materialHeading.textContent = material.heading;
 
-        const materialDescription = clone.querySelector && (clone.querySelector('.material-description') || clone.querySelector('.materials-description'));
-        if (materialDescription) materialDescription.textContent = material.description || '';
+        const materialDescription = clone.querySelector(".material-description");
+        materialDescription.textContent = material.description;
 
-        //append the populated template to list
-        if (materialList) materialList.appendChild(clone);
+        //hide loader
+        //append the populated template to li
+        materialList.appendChild(clone);
       });
     };
 
