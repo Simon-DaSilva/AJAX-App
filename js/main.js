@@ -27,7 +27,7 @@
 
     materialListData();
     //make AJAX call here
-    infoBoxData();
+
     
     function infoBoxData() {
     fetch("https://swiftpixel.com/earbud/api/infoboxes")
@@ -39,7 +39,7 @@
       .catch(error);
     };
   
-  
+  infoBoxData();
 
   function loadMaterialInfo(materials) {
       
@@ -61,25 +61,27 @@
       });
     };
 
-   function loadInfoBoxes(infoBoxes) {
-    infoBoxes.forEach((infoBox, index) => {
-      let selected = document.querySelector(`#hotspot-${index + 1}`);
+   
 
-      const titleElement = document.createElement("h2");
+  function loadInfoBoxes(infoBoxes) {
+    infoBoxes.forEach((infoBox, index) => {
+     const cloneHotspot = hotspotTemplate.content.cloneNode(true);
+     let selected = document.querySelector(`#hotspot-${index + 1}`);
+     
+     const titleElement = clone.querySelector(".hotspot-title");
       titleElement.textContent = infoBox.title;
       selected.appendChild(titleElement);
 
-      const textElement = document.createElement("p");
+      const textElement = clone.querySelector(".hotspot-text");
       textElement.textContent = infoBox.text;
       selected.appendChild(textElement);
 
-      const imageElement = document.createElement("img");
+      const imageElement = clone.querySelector(".hotspot-image");
       imageElement.src = infoBox.image;
       selected.appendChild(imageElement);
-    })
-
-  }
-    
+      
+      hotspotList.appendChild(cloneHotspot);
+    });
 
 
    function showInfo() {
@@ -101,5 +103,5 @@
     hotspot.addEventListener("mouseleave", hideInfo);
   });
 
-})();
+}})();
 
